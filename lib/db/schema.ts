@@ -1,0 +1,47 @@
+import { pgTable , boolean , timestamp , text , integer , uuid } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+
+export const files = pgTable("files" , {
+    id : uuid("id").defaultRandom().primaryKey() ,
+
+    // basic file/folder info
+    name : text("name").notNull() ,
+    path : text("path").notNull() ,
+    size : integer("size").notNull() , 
+    type : text("type").notNull(),
+
+    // storage information
+    fileUrl : text("file_url").notNull() ,
+    thumbnailUrl : text("thumbnail_url") ,
+
+    // ownership
+    userId : text("user_id").notNull() ,
+    parentId : uuid("parent_id") ,
+
+    // file/folder flags
+    isFolder : boolean("is_folder").notNull().default(false) ,
+    isStarred : boolean("is_starred").notNull().default(false) ,
+    isTrash : boolean("is_trash").notNull().default(false) ,
+
+    // timestamps
+    createdAt : timestamp("created_at").defaultNow().notNull() ,
+    updatedAt : timestamp("updated_at").defaultNow().notNull() ,
+})
+
+// let's roll on to relations , relations we will use here will be one to many because one folder can have many files and one user can have many files
+
+export const filesRelations = relations(files , ({one,many}) => (
+    {
+        parent : one(files , {
+            fields : [files.parentId],
+            references : [files.id]
+        }),
+
+        // relationship to child file/folder 
+        children : many(files)
+    }
+));
+
+// type definitions
+export type File = typeof files.$inferSelect;
+export type NewFile = typeof files.$inferInsert;
