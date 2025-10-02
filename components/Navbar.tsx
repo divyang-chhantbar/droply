@@ -12,6 +12,7 @@ import {
 } from "@heroui/dropdown";
 import { Avatar } from "@heroui/avatar";
 import { Button } from "@heroui/button";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 
 interface SerializedUser {
@@ -35,11 +36,9 @@ export default function Navbar({ user }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  // Check if we're on the dashboard page
   const isOnDashboard =
     pathname === "/dashboard" || pathname?.startsWith("/dashboard/");
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -49,7 +48,6 @@ export default function Navbar({ user }: NavbarProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu when window is resized to desktop size
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -61,7 +59,6 @@ export default function Navbar({ user }: NavbarProps) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Handle body scroll lock when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -74,35 +71,12 @@ export default function Navbar({ user }: NavbarProps) {
     };
   }, [isMobileMenuOpen]);
 
-  // Handle clicks outside the mobile menu
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        isMobileMenuOpen &&
-        mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target as Node)
-      ) {
-        // Check if the click is not on the menu button (which has its own handler)
-        const target = event.target as HTMLElement;
-        if (!target.closest('[data-menu-button="true"]')) {
-          setIsMobileMenuOpen(false);
-        }
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isMobileMenuOpen]);
-
   const handleSignOut = () => {
     signOut(() => {
       router.push("/");
     });
   };
 
-  // Process user data with defaults if not provided
   const userDetails = {
     fullName: user
       ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
@@ -128,48 +102,61 @@ export default function Navbar({ user }: NavbarProps) {
   };
 
   return (
-    <header
-      className={`bg-default-50 border-b border-default-200 sticky top-0 z-50 transition-shadow ${isScrolled ? "shadow-sm" : ""}`}
+    <motion.header
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 100 }}
+      className={`bg-gradient-to-r from-blue-50 to-cyan-50 border-b-2 ${
+        isScrolled ? "border-blue-200 shadow-lg" : "border-blue-100"
+      } sticky top-0 z-50 transition-all duration-300`}
     >
-      <div className="container mx-auto py-3 md:py-4 px-4 md:px-6">
+      <div className="container mx-auto py-4 md:py-5 px-4 md:px-6">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 z-10">
-            <CloudUpload className="h-6 w-6 text-primary" />
-            <h1 className="text-xl font-bold">Droply</h1>
-          </Link>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link href="/" className="flex items-center gap-3 z-10">
+              <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg shadow-md">
+                <CloudUpload className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                Droply
+              </h1>
+            </Link>
+          </motion.div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex gap-4 items-center">
-            {/* Show these buttons when user is signed out */}
             <SignedOut>
-              <Link href="/sign-in">
-                <Button variant="flat" color="primary">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/sign-up">
-                <Button variant="solid" color="primary">
-                  Sign Up
-                </Button>
-              </Link>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link href="/sign-in">
+                  <Button variant="flat" color="primary" className="shadow-sm">
+                    Sign In
+                  </Button>
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link href="/sign-up">
+                  <Button variant="solid" color="primary" className="shadow-md">
+                    Sign Up
+                  </Button>
+                </Link>
+              </motion.div>
             </SignedOut>
 
-            {/* Show these when user is signed in */}
             <SignedIn>
               <div className="flex items-center gap-4">
                 {!isOnDashboard && (
-                  <Link href="/dashboard">
-                    <Button variant="flat" color="primary">
-                      Dashboard
-                    </Button>
-                  </Link>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Link href="/dashboard">
+                      <Button variant="flat" color="primary" className="shadow-sm">
+                        Dashboard
+                      </Button>
+                    </Link>
+                  </motion.div>
                 )}
                 <Dropdown>
                   <DropdownTrigger>
                     <Button
                       variant="flat"
-                      className="p-0 bg-transparent min-w-0"
+                      className="p-0 bg-white/80 hover:bg-white min-w-0 shadow-sm"
                       endContent={<ChevronDown className="h-4 w-4 ml-2" />}
                     >
                       <div className="flex items-center gap-2">
@@ -177,10 +164,10 @@ export default function Navbar({ user }: NavbarProps) {
                           name={userDetails.initials}
                           size="sm"
                           src={user?.imageUrl || undefined}
-                          className="h-8 w-8 flex-shrink-0"
+                          className="h-9 w-9 flex-shrink-0 ring-2 ring-blue-200"
                           fallback={<User className="h-4 w-4" />}
                         />
-                        <span className="text-default-600 hidden sm:inline">
+                        <span className="text-default-600 hidden sm:inline font-medium">
                           {userDetails.displayName}
                         </span>
                       </div>
@@ -216,19 +203,19 @@ export default function Navbar({ user }: NavbarProps) {
             </SignedIn>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-2">
             <SignedIn>
               <Avatar
                 name={userDetails.initials}
                 size="sm"
                 src={user?.imageUrl || undefined}
-                className="h-8 w-8 flex-shrink-0"
+                className="h-9 w-9 flex-shrink-0 ring-2 ring-blue-200"
                 fallback={<User className="h-4 w-4" />}
               />
             </SignedIn>
-            <button
-              className="z-50 p-2"
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              className="z-50 p-2 rounded-lg bg-white/80 hover:bg-white shadow-sm"
               onClick={toggleMobileMenu}
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               data-menu-button="true"
@@ -238,100 +225,104 @@ export default function Navbar({ user }: NavbarProps) {
               ) : (
                 <Menu className="h-6 w-6 text-default-700" />
               )}
-            </button>
+            </motion.button>
           </div>
 
-          {/* Mobile Menu Overlay */}
-          {isMobileMenuOpen && (
-            <div
-              className="fixed inset-0 bg-black/20 z-40 md:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-              aria-hidden="true"
-            />
-          )}
-
-          {/* Mobile Menu */}
-          <div
-            ref={mobileMenuRef}
-            className={`fixed top-0 right-0 bottom-0 w-4/5 max-w-sm bg-default-50 z-40 flex flex-col pt-20 px-6 shadow-xl transition-transform duration-300 ease-in-out ${
-              isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-            } md:hidden`}
-          >
-            <SignedOut>
-              <div className="flex flex-col gap-4 items-center">
-                <Link
-                  href="/sign-in"
-                  className="w-full"
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/30 z-40 md:hidden backdrop-blur-sm"
                   onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Button variant="flat" color="primary" className="w-full">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link
-                  href="/sign-up"
-                  className="w-full"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <Button variant="solid" color="primary" className="w-full">
-                    Sign Up
-                  </Button>
-                </Link>
-              </div>
-            </SignedOut>
+                />
 
-            <SignedIn>
-              <div className="flex flex-col gap-6">
-                {/* User info */}
-                <div className="flex items-center gap-3 py-4 border-b border-default-200">
-                  <Avatar
-                    name={userDetails.initials}
-                    size="md"
-                    src={user?.imageUrl || undefined}
-                    className="h-10 w-10 flex-shrink-0"
-                    fallback={<User className="h-5 w-5" />}
-                  />
-                  <div>
-                    <p className="font-medium">{userDetails.displayName}</p>
-                    <p className="text-sm text-default-500">
-                      {userDetails.email}
-                    </p>
-                  </div>
-                </div>
+                <motion.div
+                  ref={mobileMenuRef}
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ type: "spring", damping: 25 }}
+                  className="fixed top-0 right-0 bottom-0 w-4/5 max-w-sm bg-gradient-to-br from-blue-50 to-cyan-50 z-40 flex flex-col pt-20 px-6 shadow-2xl md:hidden"
+                >
+                  <SignedOut>
+                    <div className="flex flex-col gap-4 items-center">
+                      <Link
+                        href="/sign-in"
+                        className="w-full"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <Button variant="flat" color="primary" className="w-full shadow-sm">
+                          Sign In
+                        </Button>
+                      </Link>
+                      <Link
+                        href="/sign-up"
+                        className="w-full"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <Button variant="solid" color="primary" className="w-full shadow-md">
+                          Sign Up
+                        </Button>
+                      </Link>
+                    </div>
+                  </SignedOut>
 
-                {/* Navigation links */}
-                <div className="flex flex-col gap-4">
-                  {!isOnDashboard && (
-                    <Link
-                      href="/dashboard"
-                      className="py-2 px-3 hover:bg-default-100 rounded-md transition-colors"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      Dashboard
-                    </Link>
-                  )}
-                  <Link
-                    href="/dashboard?tab=profile"
-                    className="py-2 px-3 hover:bg-default-100 rounded-md transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                  <button
-                    className="py-2 px-3 text-left text-danger hover:bg-danger-50 rounded-md transition-colors mt-4"
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      handleSignOut();
-                    }}
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              </div>
-            </SignedIn>
-          </div>
+                  <SignedIn>
+                    <div className="flex flex-col gap-6">
+                      <div className="flex items-center gap-3 py-4 border-b-2 border-blue-200">
+                        <Avatar
+                          name={userDetails.initials}
+                          size="md"
+                          src={user?.imageUrl || undefined}
+                          className="h-12 w-12 flex-shrink-0 ring-2 ring-blue-200"
+                          fallback={<User className="h-5 w-5" />}
+                        />
+                        <div>
+                          <p className="font-bold text-default-900">{userDetails.displayName}</p>
+                          <p className="text-sm text-default-600">
+                            {userDetails.email}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-3">
+                        {!isOnDashboard && (
+                          <Link
+                            href="/dashboard"
+                            className="py-3 px-4 hover:bg-white/60 rounded-lg transition-colors font-medium"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            Dashboard
+                          </Link>
+                        )}
+                        <Link
+                          href="/dashboard?tab=profile"
+                          className="py-3 px-4 hover:bg-white/60 rounded-lg transition-colors font-medium"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Profile
+                        </Link>
+                        <button
+                          className="py-3 px-4 text-left text-danger hover:bg-danger-50 rounded-lg transition-colors mt-4 font-medium"
+                          onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            handleSignOut();
+                          }}
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  </SignedIn>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

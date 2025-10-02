@@ -52,10 +52,11 @@ export default function SignInForm() {
         console.error("Sign-in incomplete:", result);
         setAuthError("Sign-in could not be completed. Please try again.");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Sign-in error:", error);
+      const err = error as { errors?: Array<{ message?: string }> };
       setAuthError(
-        error.errors?.[0]?.message ||
+        err.errors?.[0]?.message ||
           "An error occurred during sign-in. Please try again."
       );
     } finally {

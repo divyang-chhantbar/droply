@@ -2,6 +2,7 @@
 
 import { Folder, FileText } from "lucide-react";
 import { IKImage } from "imagekitio-next";
+import { motion } from "framer-motion";
 import type { File as FileType } from "@/lib/db/schema";
 
 interface FileIconProps {
@@ -9,19 +10,28 @@ interface FileIconProps {
 }
 
 export default function FileIcon({ file }: FileIconProps) {
-  if (file.isFolder) return <Folder className="h-5 w-5 text-blue-500" />;
+  if (file.isFolder) {
+    return (
+      <motion.div whileHover={{ scale: 1.1, rotate: 5 }} transition={{ type: "spring", stiffness: 300 }}>
+        <Folder className="h-6 w-6 text-blue-500" />
+      </motion.div>
+    );
+  }
 
   const fileType = file.type.split("/")[0];
   switch (fileType) {
     case "image":
       return (
-        <div className="h-12 w-12 relative overflow-hidden rounded">
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          className="h-14 w-14 relative overflow-hidden rounded-lg shadow-md"
+        >
           <IKImage
             path={file.path}
             transformation={[
               {
-                height: 48,
-                width: 48,
+                height: 56,
+                width: 56,
                 focus: "auto",
                 quality: 80,
                 dpr: 2,
@@ -32,16 +42,26 @@ export default function FileIcon({ file }: FileIconProps) {
             alt={file.name}
             style={{ objectFit: "cover", height: "100%", width: "100%" }}
           />
-        </div>
+        </motion.div>
       );
     case "application":
       if (file.type.includes("pdf")) {
-        return <FileText className="h-5 w-5 text-red-500" />;
+        return (
+          <motion.div whileHover={{ scale: 1.1, rotate: -5 }}>
+            <FileText className="h-6 w-6 text-red-500" />
+          </motion.div>
+        );
       }
-      return <FileText className="h-5 w-5 text-orange-500" />;
-    case "video":
-      return <FileText className="h-5 w-5 text-purple-500" />;
+      return (
+        <motion.div whileHover={{ scale: 1.1, rotate: -5 }}>
+          <FileText className="h-6 w-6 text-orange-500" />
+        </motion.div>
+      );
     default:
-      return <FileText className="h-5 w-5 text-gray-500" />;
+      return (
+        <motion.div whileHover={{ scale: 1.1 }}>
+          <FileText className="h-6 w-6 text-gray-500" />
+        </motion.div>
+      );
   }
 }

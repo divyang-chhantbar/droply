@@ -61,10 +61,10 @@ export default function SignUpForm() {
 
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setVerifying(true);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Sign-up error:", error);
       setAuthError(
-        error.errors?.[0]?.message ||
+        (error as { errors?: Array<{ message?: string }> }).errors?.[0]?.message ||
           "An error occurred during sign-up. Please try again."
       );
     } finally {
@@ -95,10 +95,10 @@ export default function SignUpForm() {
           "Verification could not be completed. Please try again."
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Verification error:", error);
       setVerificationError(
-        error.errors?.[0]?.message ||
+        (error as { errors?: Array<{ message?: string }> }).errors?.[0]?.message ||
           "An error occurred during verification. Please try again."
       );
     } finally {
