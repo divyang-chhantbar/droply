@@ -22,7 +22,6 @@ declare module "@react-types/shared" {
   }
 }
 
-// Create a context for ImageKit authentication
 export const ImageKitAuthContext = createContext<{
   authenticate: () => Promise<{
     signature: string;
@@ -35,7 +34,6 @@ export const ImageKitAuthContext = createContext<{
 
 export const useImageKitAuth = () => useContext(ImageKitAuthContext);
 
-// ImageKit authentication function
 const authenticator = async () => {
   try {
     const response = await fetch("/api/imagekit-auth");
@@ -59,7 +57,15 @@ export function Providers({ children, themeProps }: ProvidersProps) {
       >
         <ImageKitAuthContext.Provider value={{ authenticate: authenticator }}>
           <ToastProvider placement="top-right" />
-          <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+          <NextThemesProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            {...themeProps}
+          >
+            {children}
+          </NextThemesProvider>
         </ImageKitAuthContext.Provider>
       </ImageKitProvider>
     </HeroUIProvider>
