@@ -1,69 +1,76 @@
+import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 import { files } from "@/lib/db/schema";
-import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
-import { and, eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import ImageKit from "imagekit";
 
 // Initialize ImageKit with your credentials
 const imagekit = new ImageKit({
   publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || "",
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY || "",
+  privateKey: process.env.NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY || "",
   urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || "",
 });
 
 export async function DELETE() {
   try {
     const { userId } = await auth();
-
     if (!userId) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Get all files in trash for this user
     const trashedFiles = await db
       .select()
       .from(files)
       .where(and(eq(files.userId, userId), eq(files.isTrash, true)));
 
-    if (!trashedFiles) {
+    if (trashedFiles.length === 0) {
       return NextResponse.json(
         { message: "No files in trash" },
         { status: 200 }
       );
     }
 
-    // Let's delete files from ImageKit
-    const deleteFiles = trashedFiles
-      .filter((file) => !file.isFolder)
+    // Delete files from ImageKit
+    const deletePromises = trashedFiles
+      .filter((file) => !file.isFolder) // Skip folders
       .map(async (file) => {
         try {
-          let imageKitFileId = null;
+          let imagekitFileId = null;
 
           if (file.fileUrl) {
-            const filewithoutQuery = file.fileUrl.split("?")[0];
-            imageKitFileId = filewithoutQuery.split("/").pop();
+            const urlWithoutQuery = file.fileUrl.split("?")[0];
+            imagekitFileId = urlWithoutQuery.split("/").pop();
           }
 
-          if (imageKitFileId && !file.path) {
+          if (!imagekitFileId && file.path) {
+            imagekitFileId = file.path.split("/").pop();
+          }
+
+          if (imagekitFileId) {
             try {
               const searchResults = await imagekit.listFiles({
-                name: imageKitFileId,
+                name: imagekitFileId,
                 limit: 1,
               });
 
               if (searchResults && searchResults.length > 0) {
-                if ("fileId" in searchResults[0]) {
-                  await imagekit.deleteFile(searchResults[0].fileId);
-                }
+                const result = searchResults[0];
+                // Type guard: check if it's a FileObject (has fileId property)
+                if ('fileId' in result) {
+                  await imagekit.deleteFile(result.fileId);
+                  console.log(`Deleted file: ${result.fileId}`);
               } else {
-                await imagekit.deleteFile(imageKitFileId);
+                await imagekit.deleteFile(imagekitFileId);
               }
+            }
             } catch (searchError) {
               console.error(
                 `Error searching for file in ImageKit:`,
                 searchError
               );
-              await imagekit.deleteFile(imageKitFileId);
+              await imagekit.deleteFile(imagekitFileId);
             }
           }
         } catch (error) {
@@ -72,22 +79,22 @@ export async function DELETE() {
       });
 
     // Wait for all ImageKit deletions to complete (or fail)
-    await Promise.allSettled(deleteFiles);
+    await Promise.allSettled(deletePromises);
 
-    // let's delete it from the db
-    const deleteFilesFromDb = await db
+    // Delete all trashed files from the database
+    const deletedFiles = await db
       .delete(files)
       .where(and(eq(files.userId, userId), eq(files.isTrash, true)))
-      .returning(); // Return the deleted files
+      .returning();
 
     return NextResponse.json({
       success: true,
-      message: `Successfully deleted ${deleteFilesFromDb.length} files from trash`,
+      message: `Successfully deleted ${deletedFiles.length} files from trash`,
     });
   } catch (error) {
-    console.error("Error deleting files:", error);
+    console.error("Error emptying trash:", error);
     return NextResponse.json(
-      { message: "Error deleting files" },
+      { error: "Failed to empty trash" },
       { status: 500 }
     );
   }
