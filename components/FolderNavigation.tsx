@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpFromLine, Home, ChevronRight } from "lucide-react";
+import { ArrowUpFromLine, Hop as Home, ChevronRight } from "lucide-react";
 import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 

@@ -11,7 +11,7 @@ import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader, CardFooter } from "@heroui/card";
 import { Divider } from "@heroui/divider";
-import { Mail, Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, CircleAlert as AlertCircle, Eye, EyeOff } from "lucide-react";
 import { signInSchema } from "@/schemas/signInSchema";
 
 export default function SignInForm() {
