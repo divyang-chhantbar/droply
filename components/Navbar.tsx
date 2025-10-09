@@ -106,18 +106,18 @@ export default function Navbar({ user }: NavbarProps) {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100 }}
-      className={`bg-gradient-to-r from-blue-50 to-cyan-50 border-b-2 ${
-        isScrolled ? "border-blue-200 shadow-lg" : "border-blue-100"
+      className={`bg-white/80 backdrop-blur-md border-b ${
+        isScrolled ? "border-neutral-200 shadow-sm" : "border-neutral-100"
       } sticky top-0 z-50 transition-all duration-300`}
     >
       <div className="container mx-auto py-4 md:py-5 px-4 md:px-6">
         <div className="flex justify-between items-center">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link href="/" className="flex items-center gap-3 z-10">
-              <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg shadow-md">
-                <CloudUpload className="h-6 w-6 text-white" />
+            <Link href="/" className="flex items-center gap-2.5 z-10 group">
+              <div className="p-2 bg-neutral-900 rounded-xl shadow-sm transition-transform group-hover:scale-105">
+                <CloudUpload className="h-5 w-5 text-white" />
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              <h1 className="text-xl font-semibold text-neutral-900 tracking-tight">
                 Droply
               </h1>
             </Link>
@@ -125,16 +125,16 @@ export default function Navbar({ user }: NavbarProps) {
 
           <div className="hidden md:flex gap-4 items-center">
             <SignedOut>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link href="/sign-in">
-                  <Button variant="flat" color="primary" className="shadow-sm">
+                  <Button variant="light" className="text-neutral-700 font-medium">
                     Sign In
                   </Button>
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                 <Link href="/sign-up">
-                  <Button variant="solid" color="primary" className="shadow-md">
+                  <Button className="bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition-colors shadow-sm">
                     Sign Up
                   </Button>
                 </Link>
@@ -144,9 +144,9 @@ export default function Navbar({ user }: NavbarProps) {
             <SignedIn>
               <div className="flex items-center gap-4">
                 {!isOnDashboard && (
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Link href="/dashboard">
-                      <Button variant="flat" color="primary" className="shadow-sm">
+                      <Button variant="light" className="text-neutral-700 font-medium">
                         Dashboard
                       </Button>
                     </Link>
@@ -155,19 +155,19 @@ export default function Navbar({ user }: NavbarProps) {
                 <Dropdown>
                   <DropdownTrigger>
                     <Button
-                      variant="flat"
-                      className="p-0 bg-white/80 hover:bg-white min-w-0 shadow-sm"
-                      endContent={<ChevronDown className="h-4 w-4 ml-2" />}
+                      variant="light"
+                      className="p-1 pr-3 bg-transparent hover:bg-neutral-100 min-w-0 rounded-full transition-colors"
+                      endContent={<ChevronDown className="h-3.5 w-3.5 ml-1 text-neutral-500" />}
                     >
                       <div className="flex items-center gap-2">
                         <Avatar
                           name={userDetails.initials}
                           size="sm"
                           src={user?.imageUrl || undefined}
-                          className="h-9 w-9 flex-shrink-0 ring-2 ring-blue-200"
+                          className="h-8 w-8 flex-shrink-0 ring-1 ring-neutral-200"
                           fallback={<User className="h-4 w-4" />}
                         />
-                        <span className="text-default-600 hidden sm:inline font-medium">
+                        <span className="text-neutral-700 hidden sm:inline font-medium text-sm">
                           {userDetails.displayName}
                         </span>
                       </div>
@@ -209,21 +209,21 @@ export default function Navbar({ user }: NavbarProps) {
                 name={userDetails.initials}
                 size="sm"
                 src={user?.imageUrl || undefined}
-                className="h-9 w-9 flex-shrink-0 ring-2 ring-blue-200"
+                className="h-8 w-8 flex-shrink-0 ring-1 ring-neutral-200"
                 fallback={<User className="h-4 w-4" />}
               />
             </SignedIn>
             <motion.button
-              whileTap={{ scale: 0.9 }}
-              className="z-50 p-2 rounded-lg bg-white/80 hover:bg-white shadow-sm"
+              whileTap={{ scale: 0.95 }}
+              className="z-50 p-2 rounded-lg bg-transparent hover:bg-neutral-100 transition-colors"
               onClick={toggleMobileMenu}
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               data-menu-button="true"
             >
               {isMobileMenuOpen ? (
-                <X className="h-6 w-6 text-default-700" />
+                <X className="h-5 w-5 text-neutral-700" />
               ) : (
-                <Menu className="h-6 w-6 text-default-700" />
+                <Menu className="h-5 w-5 text-neutral-700" />
               )}
             </motion.button>
           </div>
@@ -235,7 +235,7 @@ export default function Navbar({ user }: NavbarProps) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 bg-black/30 z-40 md:hidden backdrop-blur-sm"
+                  className="fixed inset-0 bg-black/20 z-40 md:hidden backdrop-blur-sm"
                   onClick={() => setIsMobileMenuOpen(false)}
                 />
 
@@ -245,7 +245,7 @@ export default function Navbar({ user }: NavbarProps) {
                   animate={{ x: 0 }}
                   exit={{ x: "100%" }}
                   transition={{ type: "spring", damping: 25 }}
-                  className="fixed top-0 right-0 bottom-0 w-4/5 max-w-sm bg-gradient-to-br from-blue-50 to-cyan-50 z-40 flex flex-col pt-20 px-6 shadow-2xl md:hidden"
+                  className="fixed top-0 right-0 bottom-0 w-4/5 max-w-sm bg-white z-40 flex flex-col pt-20 px-6 shadow-xl md:hidden border-l border-neutral-200"
                 >
                   <SignedOut>
                     <div className="flex flex-col gap-4 items-center">
@@ -254,7 +254,7 @@ export default function Navbar({ user }: NavbarProps) {
                         className="w-full"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        <Button variant="flat" color="primary" className="w-full shadow-sm">
+                        <Button variant="bordered" className="w-full border-neutral-300 text-neutral-700">
                           Sign In
                         </Button>
                       </Link>
@@ -263,7 +263,7 @@ export default function Navbar({ user }: NavbarProps) {
                         className="w-full"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        <Button variant="solid" color="primary" className="w-full shadow-md">
+                        <Button className="w-full bg-neutral-900 text-white">
                           Sign Up
                         </Button>
                       </Link>
@@ -272,17 +272,17 @@ export default function Navbar({ user }: NavbarProps) {
 
                   <SignedIn>
                     <div className="flex flex-col gap-6">
-                      <div className="flex items-center gap-3 py-4 border-b-2 border-blue-200">
+                      <div className="flex items-center gap-3 py-4 border-b border-neutral-200">
                         <Avatar
                           name={userDetails.initials}
                           size="md"
                           src={user?.imageUrl || undefined}
-                          className="h-12 w-12 flex-shrink-0 ring-2 ring-blue-200"
+                          className="h-11 w-11 flex-shrink-0 ring-1 ring-neutral-200"
                           fallback={<User className="h-5 w-5" />}
                         />
                         <div>
-                          <p className="font-bold text-default-900">{userDetails.displayName}</p>
-                          <p className="text-sm text-default-600">
+                          <p className="font-semibold text-neutral-900 text-sm">{userDetails.displayName}</p>
+                          <p className="text-xs text-neutral-500">
                             {userDetails.email}
                           </p>
                         </div>
@@ -292,7 +292,7 @@ export default function Navbar({ user }: NavbarProps) {
                         {!isOnDashboard && (
                           <Link
                             href="/dashboard"
-                            className="py-3 px-4 hover:bg-white/60 rounded-lg transition-colors font-medium"
+                            className="py-2.5 px-3 hover:bg-neutral-100 rounded-lg transition-colors font-medium text-sm text-neutral-700"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             Dashboard
@@ -300,13 +300,13 @@ export default function Navbar({ user }: NavbarProps) {
                         )}
                         <Link
                           href="/dashboard?tab=profile"
-                          className="py-3 px-4 hover:bg-white/60 rounded-lg transition-colors font-medium"
+                          className="py-2.5 px-3 hover:bg-neutral-100 rounded-lg transition-colors font-medium text-sm text-neutral-700"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
                           Profile
                         </Link>
                         <button
-                          className="py-3 px-4 text-left text-danger hover:bg-danger-50 rounded-lg transition-colors mt-4 font-medium"
+                          className="py-2.5 px-3 text-left text-red-600 hover:bg-red-50 rounded-lg transition-colors mt-4 font-medium text-sm"
                           onClick={() => {
                             setIsMobileMenuOpen(false);
                             handleSignOut();

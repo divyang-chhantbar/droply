@@ -30,72 +30,60 @@ export default function FileTabs({
       <Tabs
         selectedKey={activeTab}
         onSelectionChange={(key) => onTabChange(key as string)}
-        color="primary"
         variant="underlined"
         classNames={{
           base: "w-full overflow-x-auto",
-          tabList: "gap-4 sm:gap-6 md:gap-8 flex-nowrap min-w-full border-b-2 border-default-200/50",
-          tab: "py-4 whitespace-nowrap data-[selected=true]:font-bold transition-all duration-300",
-          cursor: "bg-gradient-to-r from-blue-600 to-cyan-600 h-1 rounded-full",
+          tabList: "gap-4 sm:gap-6 flex-nowrap min-w-full border-b border-neutral-200",
+          tab: "py-3 px-1 whitespace-nowrap data-[selected=true]:font-semibold transition-all duration-200 text-sm",
+          cursor: "bg-neutral-900 h-0.5",
         }}
       >
         <Tab
           key="all"
           title={
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-3"
-            >
-              <File className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="font-semibold">All Files</span>
+            <div className="flex items-center gap-2">
+              <File className="h-4 w-4" />
+              <span>All Files</span>
               <Badge
                 variant="flat"
-                color="default"
                 size="sm"
-                className="bg-blue-100 text-blue-700"
+                className="bg-neutral-100 text-neutral-700 text-xs"
               >
                 {files.filter((file) => !file.isTrash).length}
               </Badge>
-            </motion.div>
+            </div>
           }
         />
         <Tab
           key="starred"
           title={
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-3"
-            >
-              <Star className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="font-semibold">Starred</span>
+            <div className="flex items-center gap-2">
+              <Star className="h-4 w-4" />
+              <span>Starred</span>
               <Badge
                 variant="flat"
-                color="warning"
                 size="sm"
-                className="bg-yellow-100 text-yellow-700"
+                className="bg-yellow-50 text-yellow-700 text-xs"
               >
                 {starredCount}
               </Badge>
-            </motion.div>
+            </div>
           }
         />
         <Tab
           key="trash"
           title={
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-3"
-            >
-              <Trash className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="font-semibold">Trash</span>
+            <div className="flex items-center gap-2">
+              <Trash className="h-4 w-4" />
+              <span>Trash</span>
               <Badge
-                variant="solid"
-                color="danger"
+                variant="flat"
                 size="sm"
+                className="bg-red-50 text-red-700 text-xs"
               >
                 {trashCount}
               </Badge>
-            </motion.div>
+            </div>
           }
         />
       </Tabs>

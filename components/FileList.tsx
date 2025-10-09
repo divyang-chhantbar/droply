@@ -437,7 +437,7 @@ const fetchFiles = async () => {
       ) : (
         <Card
           shadow="sm"
-          className="border border-default-200 bg-default-50 overflow-hidden"
+          className="border border-neutral-200 bg-white overflow-hidden"
         >
           <div className="overflow-x-auto">
             <Table
@@ -447,8 +447,8 @@ const fetchFiles = async () => {
               selectionMode="none"
               classNames={{
                 base: "min-w-full",
-                th: "bg-default-100 text-default-800 font-medium text-sm",
-                td: "py-4",
+                th: "bg-neutral-50 text-neutral-700 font-semibold text-xs uppercase tracking-wide",
+                td: "py-3.5",
               }}
             >
               <TableHeader>
@@ -464,7 +464,7 @@ const fetchFiles = async () => {
                 {filteredFiles.map((file) => (
                   <TableRow
                     key={file.id}
-                    className={`hover:bg-default-100 transition-colors ${
+                    className={`hover:bg-neutral-50 transition-colors ${
                       file.isFolder || file.type.startsWith("image/")
                         ? "cursor-pointer"
                         : ""
@@ -475,8 +475,8 @@ const fetchFiles = async () => {
                       <div className="flex items-center gap-3">
                         <FileIcon file={file} />
                         <div>
-                          <div className="font-medium flex items-center gap-2 text-default-800">
-                            <span className="truncate max-w-[150px] sm:max-w-[200px] md:max-w-[300px]">
+                          <div className="font-medium flex items-center gap-2 text-neutral-900">
+                            <span className="truncate max-w-[150px] sm:max-w-[200px] md:max-w-[300px] text-sm">
                               {file.name}
                             </span>
                             {file.isStarred && (
@@ -498,7 +498,7 @@ const fetchFiles = async () => {
                               </Tooltip>
                             )}
                           </div>
-                          <div className="text-xs text-default-500 sm:hidden">
+                          <div className="text-xs text-neutral-500 sm:hidden">
                             {formatDistanceToNow(new Date(file.createdAt), {
                               addSuffix: true,
                             })}
@@ -507,12 +507,12 @@ const fetchFiles = async () => {
                       </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      <div className="text-xs text-default-500">
+                      <div className="text-xs text-neutral-500">
                         {file.isFolder ? "Folder" : file.type}
                       </div>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      <div className="text-default-700">
+                      <div className="text-neutral-700 text-sm">
                         {file.isFolder
                           ? "-"
                           : file.size < 1024
@@ -524,12 +524,12 @@ const fetchFiles = async () => {
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       <div>
-                        <div className="text-default-700">
+                        <div className="text-neutral-700 text-sm">
                           {formatDistanceToNow(new Date(file.createdAt), {
                             addSuffix: true,
                           })}
                         </div>
-                        <div className="text-xs text-default-500 mt-1">
+                        <div className="text-xs text-neutral-400 mt-0.5">
                           {format(new Date(file.createdAt), "MMMM d, yyyy")}
                         </div>
                       </div>
