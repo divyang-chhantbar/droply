@@ -1,6 +1,6 @@
 "use client";
 
-import { Folder, FileText } from "lucide-react";
+import { Folder, FileText, File } from "lucide-react";
 import { IKImage } from "imagekitio-next";
 import { motion } from "framer-motion";
 import type { File as FileType } from "@/lib/db/schema";
@@ -12,8 +12,12 @@ interface FileIconProps {
 export default function FileIcon({ file }: FileIconProps) {
   if (file.isFolder) {
     return (
-      <motion.div whileHover={{ scale: 1.1, rotate: 5 }} transition={{ type: "spring", stiffness: 300 }}>
-        <Folder className="h-6 w-6 text-blue-500" />
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="flex items-center justify-center w-10 h-10 rounded-lg bg-neutral-100"
+      >
+        <Folder className="h-5 w-5 text-neutral-600" />
       </motion.div>
     );
   }
@@ -23,17 +27,18 @@ export default function FileIcon({ file }: FileIconProps) {
     case "image":
       return (
         <motion.div
-          whileHover={{ scale: 1.1 }}
-          className="h-14 w-14 relative overflow-hidden rounded-lg shadow-md"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="h-12 w-12 relative overflow-hidden rounded-lg ring-1 ring-neutral-200"
         >
           <IKImage
             path={file.path}
             transformation={[
               {
-                height: 56,
-                width: 56,
+                height: 48,
+                width: 48,
                 focus: "auto",
-                quality: 80,
+                quality: 85,
                 dpr: 2,
               },
             ]}
@@ -47,20 +52,32 @@ export default function FileIcon({ file }: FileIconProps) {
     case "application":
       if (file.type.includes("pdf")) {
         return (
-          <motion.div whileHover={{ scale: 1.1, rotate: -5 }}>
-            <FileText className="h-6 w-6 text-red-500" />
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center justify-center w-10 h-10 rounded-lg bg-red-50"
+          >
+            <FileText className="h-5 w-5 text-red-600" />
           </motion.div>
         );
       }
       return (
-        <motion.div whileHover={{ scale: 1.1, rotate: -5 }}>
-          <FileText className="h-6 w-6 text-orange-500" />
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center justify-center w-10 h-10 rounded-lg bg-orange-50"
+        >
+          <File className="h-5 w-5 text-orange-600" />
         </motion.div>
       );
     default:
       return (
-        <motion.div whileHover={{ scale: 1.1 }}>
-          <FileText className="h-6 w-6 text-gray-500" />
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center justify-center w-10 h-10 rounded-lg bg-neutral-100"
+        >
+          <FileText className="h-5 w-5 text-neutral-600" />
         </motion.div>
       );
   }

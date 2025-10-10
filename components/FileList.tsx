@@ -436,8 +436,8 @@ const fetchFiles = async () => {
         <FileEmptyState activeTab={activeTab} />
       ) : (
         <Card
-          shadow="sm"
-          className="border border-neutral-200 bg-white overflow-hidden"
+          shadow="none"
+          className="matte-card overflow-hidden"
         >
           <div className="overflow-x-auto">
             <Table
@@ -447,8 +447,9 @@ const fetchFiles = async () => {
               selectionMode="none"
               classNames={{
                 base: "min-w-full",
-                th: "bg-neutral-50 text-neutral-700 font-semibold text-xs uppercase tracking-wide",
-                td: "py-3.5",
+                th: "bg-neutral-50 text-neutral-600 font-semibold text-xs uppercase tracking-wider",
+                td: "py-4",
+                tr: "smooth-transition hover:bg-neutral-50/50",
               }}
             >
               <TableHeader>

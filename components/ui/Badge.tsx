@@ -25,47 +25,47 @@ export const Badge = ({
 }: BadgeProps & React.HTMLAttributes<HTMLSpanElement>) => {
   const colorStyles = {
     default: {
-      solid: "bg-default-500 text-white",
-      flat: "bg-default-100 text-default-800",
-      outline: "border border-default-300 text-default-800",
+      solid: "bg-neutral-900 text-white",
+      flat: "bg-neutral-100 text-neutral-800",
+      outline: "border border-neutral-300 text-neutral-800",
     },
     primary: {
-      solid: "bg-primary text-white",
-      flat: "bg-primary-100 text-primary-800",
-      outline: "border border-primary-300 text-primary-800",
+      solid: "bg-neutral-900 text-white",
+      flat: "bg-neutral-100 text-neutral-900",
+      outline: "border border-neutral-300 text-neutral-900",
     },
     secondary: {
-      solid: "bg-secondary text-white",
-      flat: "bg-secondary-100 text-secondary-800",
-      outline: "border border-secondary-300 text-secondary-800",
+      solid: "bg-neutral-700 text-white",
+      flat: "bg-neutral-100 text-neutral-700",
+      outline: "border border-neutral-300 text-neutral-700",
     },
     success: {
-      solid: "bg-success text-white",
-      flat: "bg-success-100 text-success-800",
-      outline: "border border-success-300 text-success-800",
+      solid: "bg-emerald-600 text-white",
+      flat: "bg-emerald-50 text-emerald-700",
+      outline: "border border-emerald-300 text-emerald-700",
     },
     warning: {
-      solid: "bg-warning text-white",
-      flat: "bg-warning-100 text-warning-800",
-      outline: "border border-warning-300 text-warning-800",
+      solid: "bg-amber-600 text-white",
+      flat: "bg-amber-50 text-amber-700",
+      outline: "border border-amber-300 text-amber-700",
     },
     danger: {
-      solid: "bg-danger text-white",
-      flat: "bg-danger-100 text-danger-800",
-      outline: "border border-danger-300 text-danger-800",
+      solid: "bg-red-600 text-white",
+      flat: "bg-red-50 text-red-700",
+      outline: "border border-red-300 text-red-700",
     },
   };
 
   const sizeStyles = {
-    sm: "text-xs px-1.5 py-0.5 rounded",
-    md: "text-xs px-2 py-1 rounded-md",
-    lg: "text-sm px-2.5 py-1 rounded-md",
+    sm: "text-[11px] px-1.5 py-0.5 rounded-md font-medium",
+    md: "text-xs px-2 py-1 rounded-md font-medium",
+    lg: "text-sm px-2.5 py-1.5 rounded-lg font-medium",
   };
 
   return (
     <span
       className={cn(
-        "inline-flex items-center justify-center font-medium",
+        "inline-flex items-center justify-center smooth-transition",
         colorStyles[color][variant],
         sizeStyles[size],
         className

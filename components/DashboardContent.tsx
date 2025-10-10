@@ -105,13 +105,16 @@ export default function DashboardContent({
             >
               <motion.div
                 className="lg:col-span-1"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
               >
-                <Card className="border border-neutral-200 bg-white shadow-sm hover:shadow-md transition-all duration-200">
+                <Card className="matte-card hover-lift">
                   <CardHeader className="flex gap-2.5 pb-4 pt-5">
-                    <div className="p-1.5 bg-neutral-100 rounded-lg">
+                    <div className="p-2 bg-neutral-100 rounded-xl">
                       <FileUp className="h-4 w-4 text-neutral-700" />
                     </div>
-                    <h2 className="text-base font-semibold text-neutral-900">
+                    <h2 className="text-base font-semibold text-neutral-900 tracking-tight">
                       Upload
                     </h2>
                   </CardHeader>
@@ -127,13 +130,16 @@ export default function DashboardContent({
 
               <motion.div
                 className="lg:col-span-2"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
               >
-                <Card className="border border-neutral-200 bg-white shadow-sm hover:shadow-md transition-all duration-200">
+                <Card className="matte-card hover-lift">
                   <CardHeader className="flex gap-2.5 pb-4 pt-5">
-                    <div className="p-1.5 bg-neutral-100 rounded-lg">
+                    <div className="p-2 bg-neutral-100 rounded-xl">
                       <FileText className="h-4 w-4 text-neutral-700" />
                     </div>
-                    <h2 className="text-base font-semibold text-neutral-900">
+                    <h2 className="text-base font-semibold text-neutral-900 tracking-tight">
                       Your Files
                     </h2>
                   </CardHeader>

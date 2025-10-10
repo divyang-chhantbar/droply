@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpFromLine, Hop as Home, ChevronRight } from "lucide-react";
+import { ArrowUpFromLine, Home as HomeIcon, ChevronRight } from "lucide-react";
 import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 
@@ -17,47 +17,51 @@ export default function FolderNavigation({
 }: FolderNavigationProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3 }}
-      className="flex flex-wrap items-center gap-2 text-sm overflow-x-auto pb-3 px-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-100"
+      initial={{ opacity: 0, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="flex flex-wrap items-center gap-2 text-sm overflow-x-auto px-4 py-3 matte-card rounded-xl"
     >
-      <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Button
-          variant="flat"
+          variant="bordered"
           size="sm"
           isIconOnly
           onClick={navigateUp}
           isDisabled={folderPath.length === 0}
-          className="bg-white/80 hover:bg-white shadow-sm"
+          className="border-neutral-200 text-neutral-700 hover:bg-neutral-50 smooth-transition disabled:opacity-40"
         >
-          <ArrowUpFromLine className="h-4 w-4" />
+          <ArrowUpFromLine className="h-3.5 w-3.5" />
         </Button>
       </motion.div>
-      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
         <Button
           variant="flat"
           size="sm"
           onClick={() => navigateToPathFolder(-1)}
-          className={`bg-white/80 hover:bg-white shadow-sm ${folderPath.length === 0 ? "font-bold text-blue-600" : ""}`}
-          startContent={<Home className="h-4 w-4" />}
+          className={`smooth-transition font-medium ${
+            folderPath.length === 0
+              ? "bg-neutral-900 text-white"
+              : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+          }`}
+          startContent={<HomeIcon className="h-3.5 w-3.5" />}
         >
           Home
         </Button>
       </motion.div>
       {folderPath.map((folder, index) => (
-        <div key={folder.id} className="flex items-center">
-          <ChevronRight className="mx-1 text-default-400 h-4 w-4" />
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <div key={folder.id} className="flex items-center gap-1">
+          <ChevronRight className="text-neutral-400 h-3.5 w-3.5" />
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button
               variant="flat"
               size="sm"
               onClick={() => navigateToPathFolder(index)}
-              className={`${
+              className={`smooth-transition font-medium ${
                 index === folderPath.length - 1
-                  ? "font-bold text-blue-600 bg-white"
-                  : "bg-white/80 hover:bg-white"
-              } text-ellipsis overflow-hidden max-w-[150px] shadow-sm`}
+                  ? "bg-neutral-900 text-white"
+                  : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+              } text-ellipsis overflow-hidden max-w-[150px]`}
               title={folder.name}
             >
               {folder.name}

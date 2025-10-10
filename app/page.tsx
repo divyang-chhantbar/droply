@@ -13,8 +13,7 @@ import Navbar from "@/components/Navbar";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      {/* Use the unified Navbar component */}
+    <div className="min-h-screen flex flex-col bg-neutral-50">
       <Navbar />
 
       {/* Main content */}
@@ -62,7 +61,7 @@ export default function Home() {
 
               <div className="flex justify-center order-first lg:order-last">
                 <div className="relative w-72 h-72 md:w-96 md:h-96">
-                  <div className="absolute inset-0 bg-neutral-100 rounded-3xl"></div>
+                  <div className="absolute inset-0 matte-card rounded-3xl hover-lift"></div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <ImageIcon className="h-32 md:h-40 w-32 md:w-40 text-neutral-300" />
                   </div>
@@ -83,7 +82,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              <Card className="border border-neutral-200 bg-white shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+              <Card className="matte-card hover-lift">
                 <CardBody className="p-8 text-center">
                   <div className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-neutral-100 flex items-center justify-center">
                     <CloudUpload className="h-7 w-7 text-neutral-700" />
@@ -95,7 +94,7 @@ export default function Home() {
                 </CardBody>
               </Card>
 
-              <Card className="border border-neutral-200 bg-white shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+              <Card className="matte-card hover-lift">
                 <CardBody className="p-8 text-center">
                   <div className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-neutral-100 flex items-center justify-center">
                     <Folder className="h-7 w-7 text-neutral-700" />
@@ -109,7 +108,7 @@ export default function Home() {
                 </CardBody>
               </Card>
 
-              <Card className="border border-neutral-200 bg-white shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 sm:col-span-2 md:col-span-1 mx-auto sm:mx-0 max-w-md sm:max-w-full">
+              <Card className="matte-card hover-lift sm:col-span-2 md:col-span-1 mx-auto sm:mx-0 max-w-md sm:max-w-full">
                 <CardBody className="p-8 text-center">
                   <div className="w-14 h-14 mx-auto mb-5 rounded-2xl bg-neutral-100 flex items-center justify-center">
                     <Shield className="h-7 w-7 text-neutral-700" />
@@ -127,7 +126,7 @@ export default function Home() {
         </section>
 
         {/* CTA section */}
-        <section className="py-16 md:py-24 px-4 md:px-6 bg-white">
+        <section className="py-16 md:py-24 px-4 md:px-6 bg-neutral-50">
           <div className="container mx-auto text-center max-w-2xl">
             <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-neutral-900 tracking-tight">
               Ready to get started?
